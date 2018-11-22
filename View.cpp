@@ -138,7 +138,7 @@ public:
     refresh();
     wrefresh(tela);
   }
-  int ViewWin(int victory) {
+  void ViewWin(int victory) {
     if (victory) {
       mvprintw(LINES/2, COLS/2-4, "VITORIA!");
     }
@@ -146,7 +146,6 @@ public:
       mvprintw(LINES/2, COLS/2-4, "GAME-OVER!");
     }
     refresh();
-    return 0;
   }
   void ViewInfo(void) {
     clear();

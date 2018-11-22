@@ -7,7 +7,7 @@ private:
   int route =0 ;
 public:
   Controller (void){ }
-  
+
   Controller *menu(void) {
     int action = 0,escolha=0;
 
@@ -52,9 +52,6 @@ public:
   }
   int quit(void) {
     return 1;
-  }
-  int GetRoute(void) {
-    return this->route;
   }
 
   int action(void) {

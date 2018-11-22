@@ -4,12 +4,16 @@
 
 class Kernel {
 
+private:
+  int _move = 1;
+
+
 public:
   std::vector<std::vector<int> > table;
   int height;
   int width;
   int null;
-  int _move = 1;
+
 
   Kernel (int w= 4, int h = 4, int null=0){
 
@@ -233,5 +237,4 @@ public:
     return 0;
   }
 
-  // virtual ~Kernel (){}
 };
