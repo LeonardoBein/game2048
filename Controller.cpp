@@ -28,7 +28,7 @@ public:
   }
 
   int start(void) {
-    int action = 0, add=0;
+    int action = 0;
     this->ClearTable();
     this->newNumbers(2);
     do {

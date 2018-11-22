@@ -23,23 +23,11 @@ enum CONFIGS
 
 
 class View {
+
 private:
   const char *menu[3] = {"Jogo", "Info", "Sair"};
   WINDOW * windows = NULL;
-public:
-  int SizeMenuOptions = 3;
 
-
-  View (){
-    this->initCurses();
-
-  }
-  WINDOW *GetWindow(int height,int width) {
-    if (!this->windows) {
-      return newwin(2*height+1, 5*width+1, (LINES-2*height)/2, (COLS-5*width)/2);
-    }
-    return this->windows;
-  }
   void initCurses(void)
   {
   	initscr();
@@ -65,6 +53,21 @@ public:
   	}
   }
 
+  WINDOW *GetWindow(int height,int width) {
+    if (!this->windows) {
+      return newwin(2*height+1, 5*width+1, (LINES-2*height)/2, (COLS-5*width)/2);
+    }
+    return this->windows;
+  }
+
+public:
+  int SizeMenuOptions = 3;
+
+  View (){
+    this->initCurses();
+
+  }
+
   void ViewMenu(int escolha=0) {
     clear();
 		for(int i=0; i<3; ++i){
@@ -79,7 +82,7 @@ public:
     }
 		refresh();
   }
-  void ViewGame(int height,int width,std::vector<std::vector<int> > table,int null=0) {
+  void ViewGame(int height,int width, std::vector<std::vector<int>> table,int null=0) {
     WINDOW * tela = this->GetWindow(height,width);
     int x,y;
     clear();
