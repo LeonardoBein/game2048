@@ -14,10 +14,12 @@ public:
     for (;;) {
       this->ViewMenu(escolha);
       action = getch();
-      if (action == KEY_DOWN)
-  			escolha = (escolha+1)%this->SizeMenuOptions;
-  		if (action == KEY_UP)
-  			escolha = (escolha-1)%this->SizeMenuOptions;
+      if (action == KEY_DOWN){
+        escolha = (escolha+1)%this->SizeMenuOptions;
+      }
+  		if (action == KEY_UP){
+        escolha = (escolha-1)%this->SizeMenuOptions;
+      }
   		if (action == '\r' || action == '\n'){
         this->route = escolha;
         return this;
@@ -26,7 +28,6 @@ public:
   }
 
   int start(void) {
-    std::cout << "GAME" << '\n';
     int action = 0, add=0;
     this->ClearTable();
     this->newNumbers(2);
