@@ -2,7 +2,7 @@
 #include "Kernel.cpp"
 #include "View.cpp"
 
-class Controller: public Kernel,public View {
+class Controller: private Kernel, private View {
 private:
   int route =0 ;
 public:
@@ -32,13 +32,14 @@ public:
     this->ClearTable();
     this->newNumbers(2);
     do {
-      this->ViewGame(this->height,this->width,this->table);
+      this->ViewGame(this->height,this->width,this->table,this->qtdMoves);
+
+
       action = getch();
       if (action == 'q' || action == ' ') {
         return 0;
       }
       this->move(action)->newNumber();
-
     } while(!this->Has2048() && (this->HasEmptySpace() || this->HasAdjacent()));
 
     this->ViewWin(this->Has2048());
@@ -70,5 +71,8 @@ public:
         break;
     }
     return 0;
+  }
+  ~Controller(){
+    std::cout << this->qtdMoves << '\n';
   }
 };

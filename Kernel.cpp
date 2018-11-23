@@ -13,6 +13,8 @@ public:
   int height;
   int width;
   int null;
+  int qtdMoves = 0;
+  int timeStart= 0;
 
 
   Kernel (int w= 4, int h = 4, int null=0){
@@ -36,6 +38,7 @@ public:
     for(int i=0; i<this->height; ++i)
   		for(int j=0; j<this->width; ++j)
         this->table[i][j] = this->null;
+    this->qtdMoves = 0;
   }
   int newNumber()
   {
@@ -64,7 +67,8 @@ public:
 
     return 1;
   }
-  int newNumbers(int loop=0){
+  int newNumbers(int loop=0)
+  {
     for (int i = 0; i < loop; i++) {
       this->newNumber();
     }
@@ -226,6 +230,7 @@ public:
   		this->_move = 0;
   	}else{
       this->_move = 1;
+      this->qtdMoves++;
     }
   	return this;
   }
