@@ -82,7 +82,7 @@ public:
     }
 		refresh();
   }
-  void ViewGame(int height,int width, std::vector<std::vector<int>> table,int null=0) {
+  View *ViewGame(int height,int width, std::vector<std::vector<int>> table,int null=0) {
     WINDOW * tela = this->GetWindow(height,width);
     int x,y;
     clear();
@@ -140,6 +140,11 @@ public:
   	wattroff(tela, TERMINAL_NUMEROS);
     refresh();
     wrefresh(tela);
+    return this;
+  }
+  void PrintMoves(int moves) {
+    mvprintw(LINES/2,0, "Moves: %4d", moves);
+    refresh();
   }
   void ViewWin(int victory) {
     if (victory) {

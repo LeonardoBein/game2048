@@ -32,7 +32,7 @@ public:
     this->ClearTable();
     this->newNumbers(2);
     do {
-      this->ViewGame(this->height,this->width,this->table,this->qtdMoves);
+      this->ViewGame(this->height,this->width,this->table)->PrintMoves(this->qtdMoves);
 
 
       action = getch();
