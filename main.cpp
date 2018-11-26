@@ -1,19 +1,19 @@
-#include "Controller.cpp"
+#include "Game.cpp"
 
 
 int main(int argc, char const *argv[]) {
-  Controller *controller = NULL;
+  Game *g2048 = NULL;
   int stop = 0;
 
-  controller = new Controller();
+  g2048 = new Game(4,4);
 
   while (1) {
-    stop = controller->menu()->action();
+    stop = g2048->menu()->action();
 
     if (stop){ break; }
 
   }
 
-  delete controller;
+  delete g2048;
   return 0;
 }

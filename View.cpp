@@ -52,6 +52,26 @@ private:
   		init_pair(11, COR_2048, COR_FUNDO);
   	}
   }
+  void colorizar(WINDOW * tela,int valor)
+  {
+  	int log;
+  	static int ultimo=0;
+
+  	if (has_colors() == FALSE)
+  		return;
+
+  	if(valor>0)
+  	{
+  		for(log=0; valor != 1; ++log)
+  			valor = valor/2;
+  		wattron(tela, COLOR_PAIR(log));
+  		ultimo=log;
+  	}else if(ultimo>0)
+  	{
+  		wattroff(tela, COLOR_PAIR(ultimo));
+  		ultimo = 0;
+  	}
+  }
 
   WINDOW *GetWindow(int height,int width) {
     if (!this->windows) {
@@ -63,7 +83,7 @@ private:
 public:
   int SizeMenuOptions = 3;
 
-  View (){
+  View (void){
     this->initCurses();
 
   }
@@ -129,12 +149,12 @@ public:
   		for (x=0; x<width; ++x)
   		{
   			wmove(tela, 2*y+1, 5*x+1);
-  			// colorizar(tela, table[y][x]);
+  			this->colorizar(tela,table[y][x]);
   			if(table[y][x] == null)
   				wprintw(tela, "    ");
   			else
   				wprintw(tela, "%4d", table[y][x]);
-  			// colorizar(tela, 0);
+          this->colorizar(tela,0);
   		}
   	}
   	wattroff(tela, TERMINAL_NUMEROS);
@@ -142,8 +162,19 @@ public:
     wrefresh(tela);
     return this;
   }
-  void PrintMoves(int moves) {
-    mvprintw(LINES/2,0, "Moves: %4d", moves);
+  View *PrintMoves(int moves) {
+    mvprintw(LINES/2,0, "Moves:   %4d", moves);
+    return this;
+  }
+  View *PrintScore(int score) {
+    mvprintw(LINES/2+1,0, "Pontos:  %4d", score);
+    return this;
+  }
+  View *PrintRecord(int record) {
+    mvprintw(LINES/2+2,0, "Recorde: %4d", record);
+    return this;
+  }
+  void Render(void){
     refresh();
   }
   void ViewWin(int victory) {
@@ -157,7 +188,7 @@ public:
   }
   void ViewInfo(void) {
     clear();
-    printw(
+    mvprintw(LINES/2,0,
     "Tente formar o numero 2048 juntando os numeros!\n"
     "Use as setas do teclado para \"jogar\" os numeros e junta-los.\n"
     "Aperte a tecla Espaço a qualquer momento apra sair do jogo!\n"

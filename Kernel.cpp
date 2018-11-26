@@ -6,6 +6,12 @@ class Kernel {
 
 private:
   int _move = 1;
+  void addScore(int a) {
+    this->_score += a;
+    if (this->record < this->_score) {
+      this->record = this->_score;
+    }
+  }
 
 
 public:
@@ -14,6 +20,8 @@ public:
   int width;
   int null;
   int qtdMoves = 0;
+  int _score = 0;
+  int record = 0;
   int timeStart= 0;
 
 
@@ -31,6 +39,9 @@ public:
     this->height = h;
     this->width = w;
     this->null = null;
+    this->qtdMoves = 0;
+    this->_score = 0;
+    this->record = 0;
 
 
   }
@@ -38,6 +49,7 @@ public:
     for(int i=0; i<this->height; ++i)
   		for(int j=0; j<this->width; ++j)
         this->table[i][j] = this->null;
+    this->_score = 0;
     this->qtdMoves = 0;
   }
   int newNumber()
@@ -194,6 +206,7 @@ public:
   				*quadradinho = *quadradinho*2;
   				*ultimo_quadradinho = this->null;
   				ultimo_quadradinho = NULL;
+          this->addScore(*quadradinho);
   			}
   			else
   			ultimo_quadradinho = quadradinho;
@@ -241,5 +254,12 @@ public:
   				return 1;
     return 0;
   }
+  int getScore(void){
+    return this->_score;
+  }
+  int getRecord(void){
+    return this->record;
+  }
+
 
 };

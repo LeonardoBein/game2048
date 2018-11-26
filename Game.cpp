@@ -2,13 +2,13 @@
 #include "Kernel.cpp"
 #include "View.cpp"
 
-class Controller: private Kernel, private View {
+class Game: private Kernel, private View {
 private:
   int route =0 ;
 public:
-  Controller (void){ }
+  Game (int h,int w,int null=0):Kernel(h,w,null){ }
 
-  Controller *menu(void) {
+  Game *menu(void) {
     int action = 0,escolha=0;
 
     for (;;) {
@@ -32,7 +32,10 @@ public:
     this->ClearTable();
     this->newNumbers(2);
     do {
-      this->ViewGame(this->height,this->width,this->table)->PrintMoves(this->qtdMoves);
+      this->ViewGame(this->height,this->width,this->table)
+          ->PrintMoves(this->qtdMoves)
+          ->PrintScore(this->getScore())
+          ->PrintRecord(this->getRecord())->Render();
 
 
       action = getch();
@@ -43,7 +46,7 @@ public:
     } while(!this->Has2048() && (this->HasEmptySpace() || this->HasAdjacent()));
 
     this->ViewWin(this->Has2048());
-    while (action != ' ' || action != 'q') {
+    while (action != ' ' && action != 'q') {
       action = getch();
     }
 
@@ -72,7 +75,7 @@ public:
     }
     return 0;
   }
-  ~Controller(){
+  ~Game(){
     std::cout << this->qtdMoves << '\n';
   }
 };
