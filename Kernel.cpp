@@ -24,7 +24,7 @@ public:
   int record = 0;
   int timeStart= 0;
 
-
+  //inicia a matriz e zera as variaveis
   Kernel (int w= 4, int h = 4, int null=0){
 
     if (w != h) {
@@ -45,6 +45,7 @@ public:
 
 
   }
+  //limpa a matriz, pontos e quantidades de movimentos
   void ClearTable(void){
     for(int i=0; i<this->height; ++i)
   		for(int j=0; j<this->width; ++j)
@@ -52,6 +53,7 @@ public:
     this->_score = 0;
     this->qtdMoves = 0;
   }
+  //insere um numero na tabela aleatoriamente (90% -> 2, 10% -> 4)
   int newNumber()
   {
     srand(time(NULL)*rand());
@@ -79,12 +81,14 @@ public:
 
     return 1;
   }
+  // insere vários numeros
   int newNumbers(int loop=0)
   {
     for (int i = 0; i < loop; i++) {
       this->newNumber();
     }
   }
+  //pesquisa se possui espaço vazio na matriz
   int HasEmptySpace()
   {
   	int y,x;
@@ -96,6 +100,7 @@ public:
 
   	return 0;
   }
+  // pesquisa se na matriz possui adjacentes igual
   int HasAdjacent(void)
   {
   	int y,x, *ultimo_quadradinho;
@@ -131,6 +136,7 @@ public:
 
   	return 0;
   }
+  //função que move os numeros
   Kernel *move(int direction)
   {
   	enum {HORIZONTAL, VERTICAL} sentido;
@@ -247,6 +253,7 @@ public:
     }
   	return this;
   }
+  //pesquisa se a matriz possui o numero 2048
   int Has2048(void) {
     for(int i=0; i<this->height; ++i)
   		for(int j=0; j<this->width; ++j)
@@ -254,9 +261,11 @@ public:
   				return 1;
     return 0;
   }
+  //retorna os pontos
   int getScore(void){
     return this->_score;
   }
+  //retorna o recorde do jogo
   int getRecord(void){
     return this->record;
   }

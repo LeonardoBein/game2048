@@ -6,13 +6,16 @@ class Game: private Kernel, private View {
 private:
   int route =0 ;
 public:
+  //inicia o kernel do jogo 2048
   Game (int h,int w,int null=0):Kernel(h,w,null){ }
 
+  //função que controla o visual do menu e sua ação
+  //returna a propria classe
   Game *menu(void) {
     int action = 0,escolha=0;
 
     for (;;) {
-      this->ViewMenu(escolha);
+      this->ViewMenu(escolha)->Render();
       action = getch();
       if (action == KEY_DOWN){
         escolha = (escolha+1)%this->SizeMenuOptions;
@@ -26,7 +29,7 @@ public:
       }
     }
   }
-
+  //execução do jogo
   int start(void) {
     int action = 0;
     this->ClearTable();
@@ -45,20 +48,20 @@ public:
       this->move(action)->newNumber();
     } while(!this->Has2048() && (this->HasEmptySpace() || this->HasAdjacent()));
 
-    this->ViewWin(this->Has2048());
+    this->ViewWin(this->Has2048())->Render();
     while (action != ' ' && action != 'q') {
       action = getch();
     }
 
   }
   int info(void) {
-    this->ViewInfo();
+    this->ViewInfo()->Render();
     getch();
   }
   int quit(void) {
     return 1;
   }
-
+  //redireciona para o menu selecionado
   int action(void) {
     switch (this->route) {
       case 0:
@@ -75,7 +78,5 @@ public:
     }
     return 0;
   }
-  ~Game(){
-    std::cout << this->qtdMoves << '\n';
-  }
+  ~Game(){  }
 };

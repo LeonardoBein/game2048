@@ -25,9 +25,11 @@ enum CONFIGS
 class View {
 
 private:
-  const char *menu[3] = {"Jogo", "Info", "Sair"};
-  WINDOW * windows = NULL;
 
+  const char *menu[3] = {"Iniciar Game", "Informaçoes", "Sair"};
+  WINDOW * windows = NULL;
+  int _renderWindows = 0;
+  //inicia o ncurses;
   void initCurses(void)
   {
   	initscr();
@@ -52,6 +54,7 @@ private:
   		init_pair(11, COR_2048, COR_FUNDO);
   	}
   }
+  //função que define as cores dos numeros
   void colorizar(WINDOW * tela,int valor)
   {
   	int log;
@@ -72,10 +75,10 @@ private:
   		ultimo = 0;
   	}
   }
-
+  //cria ou retorna uma janela no ncurses
   WINDOW *GetWindow(int height,int width) {
     if (!this->windows) {
-      return newwin(2*height+1, 5*width+1, (LINES-2*height)/2, (COLS-5*width)/2);
+      this->windows = newwin(2*height+1, 5*width+1, (LINES-2*height)/2, (COLS-5*width)/2);
     }
     return this->windows;
   }
@@ -87,8 +90,12 @@ public:
     this->initCurses();
 
   }
-
-  void ViewMenu(int escolha=0) {
+  ~View (){
+    endwin();
+  }
+  //monta a parte grafica do menu do jogo
+  View *ViewMenu(int escolha=0)
+  {
     clear();
 		for(int i=0; i<3; ++i){
 			if(escolha==i)
@@ -100,9 +107,11 @@ public:
 			else
 				mvprintw(LINES/2+i, COLS/2-2, "%s", this->menu[i]);
     }
-		refresh();
+    return this;
   }
-  View *ViewGame(int height,int width, std::vector<std::vector<int>> table,int null=0) {
+  //monta a parte grafica do jogo (Matriz e numeros)
+  View *ViewGame(int height,int width, std::vector<std::vector<int>> table,int null=0)
+  {
     WINDOW * tela = this->GetWindow(height,width);
     int x,y;
     clear();
@@ -158,47 +167,54 @@ public:
   		}
   	}
   	wattroff(tela, TERMINAL_NUMEROS);
-    refresh();
-    wrefresh(tela);
+    this->_renderWindows = 1;
     return this;
   }
-  View *PrintMoves(int moves) {
+  //faz o print da quantidade de movimentos
+  View *PrintMoves(int moves)
+  {
     mvprintw(LINES/2,0, "Moves:   %4d", moves);
     return this;
   }
-  View *PrintScore(int score) {
+  //faz o print da quantidade de pontos
+  View *PrintScore(int score)
+  {
     mvprintw(LINES/2+1,0, "Pontos:  %4d", score);
     return this;
   }
-  View *PrintRecord(int record) {
+  //faz o print o recorde do jogo
+  View *PrintRecord(int record)
+  {
     mvprintw(LINES/2+2,0, "Recorde: %4d", record);
     return this;
   }
+  //Função que renderiza
   void Render(void){
     refresh();
+    if (this->_renderWindows && this->windows) {
+      wrefresh(this->windows);
+    }
   }
-  void ViewWin(int victory) {
+  //função imprime o estado de vitoria
+  View *ViewWin(int victory) {
     if (victory) {
       mvprintw(LINES/2, COLS/2-4, "VITORIA!");
     }
   	else{
       mvprintw(LINES/2, COLS/2-4, "GAME-OVER!");
     }
-    refresh();
+    return this;
   }
-  void ViewInfo(void) {
+  //monta a parte de informaçoes do jogo
+  View *ViewInfo(void) {
     clear();
     mvprintw(LINES/2,0,
     "Tente formar o numero 2048 juntando os numeros!\n"
-    "Use as setas do teclado para \"jogar\" os numeros e junta-los.\n"
-    "Aperte a tecla Espaço a qualquer momento apra sair do jogo!\n"
+    "Use as setas do teclado para arrastar os numeros e junta-los.\n"
+    "Aperte a tecla Espaço ou q a qualquer momento apra sair do jogo!\n"
     "\n"
     "Aperte qualquer tecla para continuar...");
-    refresh();
+    return this;
   }
 
-
-  ~View (){
-    endwin();
-  }
 };
